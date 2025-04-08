@@ -18,19 +18,33 @@ export async function getPositions() {
 }
   
 export async function createUser(user) {
-  const tokenResponse = await axios.get(`${API_URL}/token`)
-  const { token } = tokenResponse.data
+  try {
+    const tokenResponse = await axios.get(`${API_URL}/token`)
+    const { token } = tokenResponse.data
 
-  const formData = new FormData()
-  formData.append('name', user.name)
-  formData.append('email', user.email)
-  formData.append('phone', user.phone)
-  formData.append('position_id', user.position_id)
-  formData.append('photo', user.photo)
-  
-  await axios.post(`${API_URL}/users`, formData, {
-    headers: {
-      'Token': token,
+    const formData = new FormData()
+    formData.append('name', user.name)
+    formData.append('email', user.email)
+    formData.append('phone', user.phone)
+    formData.append('position_id', user.position_id)
+    formData.append('photo', user.photo)
+    
+    await axios.post(`${API_URL}/users`, formData, {
+      headers: {
+        'Token': token,
+      }
+    })
+  } catch (error) {
+    if (error.response) {
+      const { status, data } = error.response;   
+      if (status === 401) {
+        throw new Error(data.message);
+      } else if (status === 409) {
+        throw new Error(data.message);
+      } else if (data.message) {
+        throw new Error(data.message);
+      }
     }
-  })
+    throw error;
+  }
 }

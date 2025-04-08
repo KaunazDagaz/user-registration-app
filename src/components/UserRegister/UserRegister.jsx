@@ -8,9 +8,11 @@ import Button from "../utils/Button";
 import ImageUpload from "../utils/ImageUpload";
 import TextInput from "../utils/TextInput";
 import SuccessIcon from "../../assets/success-image.svg";
+import { useState } from "react";
 
 export default function UserRegister() {
   const queryClient = useQueryClient();
+  const [apiError, setApiError] = useState(null);
 
   const { data: positions, isLoading: isPositionsLoading } = useQuery({
     queryKey: ["positions"],
@@ -19,6 +21,8 @@ export default function UserRegister() {
 
   const submitSignUp = useMutation({
     mutationFn: async (formData) => {
+      setApiError(null);
+      
       let photo = formData.photo;
       if (!photo) {
         photo = await getDefaultProfileImage();
@@ -48,7 +52,10 @@ export default function UserRegister() {
           } 
           : undefined
       });
-    } 
+    },
+    onError: (error) => {
+      setApiError(error.message || "An error occurred during registration. Please try again.");
+    }
   });
 
   const form = useForm({
@@ -79,6 +86,11 @@ export default function UserRegister() {
         }}
         className={`w-full max-w-[380px] ${submitSignUp.isSuccess ? 'hidden' : ''}`}
       >
+        {apiError && (
+          <div className="m-4 mt-1 text-center text-error-red">
+            {apiError}
+          </div>
+        )}
         <form.Field
           name="name"
           validators={{
@@ -218,7 +230,7 @@ export default function UserRegister() {
               disabled={!isDirty || !canSubmit || submitSignUp.isPending}
               className="mx-auto"
             >
-              Sign up
+              {submitSignUp.isPending ? "Submitting..." : "Sign up"}
             </Button>
           )}
         </form.Subscribe>
