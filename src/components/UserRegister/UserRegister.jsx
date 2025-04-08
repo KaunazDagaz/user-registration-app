@@ -23,11 +23,10 @@ export default function UserRegister() {
       if (!photo) {
         photo = await getDefaultProfileImage();
       }
-      const photoBinary = await photo.text() 
 
       await createUser({
         ...formData,
-        photo: photoBinary,
+        photo: photo,
       });
 
       queryClient.setQueryData(["users"], (oldData) => {
