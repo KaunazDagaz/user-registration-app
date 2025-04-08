@@ -1,33 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Header from "./components/Header/Header"
+import ImagePage from "./components/ImagePage/ImagePage"
+import UserList from "./components/UserList/UserList"
+import UserRegister from "./components/UserRegister/UserRegister"
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header />
+      <main className="bg-background">
+        <div className="mb-[140px] mx-auto max-w-[1170px]">
+          <ImagePage />
+        </div>
+        <div className="px-4 md:px-8 lg:px-15 xl:px-0 pb-[140px] mx-auto max-w-[1170px]">
+          <UserList />
+        </div>
+        <div className="px-4 pd:mx-8 lg:px-15 xl:px-0 pb-[100px] mx-auto max-w-[1170px]">
+          <UserRegister />
+        </div>
+      </main>
     </>
   )
 }
