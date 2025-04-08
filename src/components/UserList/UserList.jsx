@@ -68,12 +68,14 @@ export default function UserList() {
           </div>
         )}
       </div>
-      <Button
-        onClick={() => fetchNextPage()} 
-        disabled={isPending || isFetchingNextPage || !hasNextPage}
-      >
-        Show more
-      </Button>
+      {hasNextPage && (
+        <Button
+          onClick={() => fetchNextPage()} 
+          disabled={isPending || isFetchingNextPage}
+        >
+          Show more
+        </Button>
+      )}
     </section>
   );
 }
